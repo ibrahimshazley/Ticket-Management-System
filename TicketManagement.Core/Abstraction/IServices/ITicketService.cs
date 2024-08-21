@@ -14,6 +14,8 @@ namespace TicketManagement.Core.Abstraction.IServices
     {
         Task<Tickets> AddAsync(Tickets entity);
         Task<PaginatedList<GetTicketsResponse>> GetTicketsWithPaging(int pageNumber, int pageSize);
+      
+
 
     }
 }

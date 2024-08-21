@@ -52,5 +52,11 @@ namespace TicketManagement.Infrastrucure.Repositories
             return  PaginatedList<GetTicketsResponse>.CreateListAsync(query, pageNumber, pageSize);
 
         }
+
+        public async Task UpdateAsync(Tickets entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

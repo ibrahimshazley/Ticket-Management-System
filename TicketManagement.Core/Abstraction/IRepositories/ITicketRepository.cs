@@ -14,6 +14,8 @@ namespace TicketManagement.Core.Abstraction.IRepositories
         Task<Tickets> AddAsync(Tickets entity);
         Task<Tickets> GetByIdAsync(int id);
         Task<PaginatedList<GetTicketsResponse>> GetTicketsWithPaging(int pageNumber, int pageSize);
+        Task UpdateAsync(Tickets entity);
+
 
     }
 }

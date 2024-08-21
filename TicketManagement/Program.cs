@@ -8,6 +8,7 @@ using TicketManagement.Infrastrucure.DBContext;
 using TicketManagement.Infrastrucure.Repositories;
 using TicketManagement.Infrastrucure.Services;
 using TicketManagement.Core;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,12 +42,24 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddApplicationServices();
 
+builder.Services.AddHangfire(config => config
+           .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+           .UseSimpleAssemblyNameTypeSerializer()
+           .UseRecommendedSerializerSettings()
+           .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHangfireServer();
+
 builder.Services.AddScoped(typeof(ITicketService), typeof(TicketService));
 builder.Services.AddScoped(typeof(ITicketRepository), typeof(TicketRepository));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseHangfireDashboard("/dashboard");
+app.UseHangfireServer();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
